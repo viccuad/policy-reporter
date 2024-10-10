@@ -2,7 +2,7 @@ name: release-image
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
     paths-ignore:
       - README.md
@@ -12,7 +12,7 @@ on:
 permissions:
   contents: read
   packages: write
-  id-token: write 
+  id-token: write
 
 jobs:
   push-policy-reporter:
@@ -98,6 +98,9 @@ jobs:
           COSIGN_REPOSITORY: ghcr.io/${{github.repository_owner}}/sbom
         run: |
           cosign attach sbom --sbom ./policy-reporter-bom.cdx.json --type cyclonedx ghcr.io/${{github.repository_owner}}/policy-reporter@${{ steps.push.outputs.digest }}
+
+      - name: Install the crane command
+        uses: kubewarden/github-actions/crane-installer@d94509d260ee11a92b4f65bc0acd297feec24d7f # v3.3.5
 
       - name: Find platform digest
         shell: bash
